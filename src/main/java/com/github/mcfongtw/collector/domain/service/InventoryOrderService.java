@@ -1,4 +1,4 @@
-package com.github.mcfongtw.collector.dao.service;
+package com.github.mcfongtw.collector.domain.service;
 
 import com.github.mcfongtw.collector.dao.entity.InventoryOrder;
 import com.github.mcfongtw.collector.dao.repository.InventoryOrderRepository;
@@ -12,11 +12,35 @@ import java.util.Date;
 import java.util.List;
 
 @Slf4j
+@Transactional
 @Service
-public class OrderService {
+public class InventoryOrderService implements CRUDService<InventoryOrder>{
 
     @Autowired
     private InventoryOrderRepository inventoryOrderRepository;
+
+
+    @Override
+    public List<InventoryOrder> findAll() {
+        return inventoryOrderRepository.findAll();
+    }
+
+    @Override
+    public InventoryOrder getOne(String uuid) {
+        return inventoryOrderRepository.getOne(uuid);
+    }
+
+    @Override
+    public InventoryOrder saveAndFlush(InventoryOrder entity) {
+        return inventoryOrderRepository.saveAndFlush(entity);
+    }
+
+    @Override
+    public void deleteById(String uuid) {
+        inventoryOrderRepository.deleteById(uuid);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public List<InventoryOrder> getListOfOrderAbovePurchasedPrice(Double purchasedPrice) {
         return this.getListOfOrderAboveOrderedPrice(purchasedPrice, InventoryOrder.ORDER_TYPE_BUY);
@@ -107,7 +131,7 @@ public class OrderService {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    @Transactional
+
     public int getAggregatedNumberOfInventoryFromOrder(String sku) {
         int result = 0;
 
@@ -115,4 +139,5 @@ public class OrderService {
 
         return result;
     }
+
 }
