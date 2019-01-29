@@ -1,0 +1,130 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: mcfongtw
+      changes:
+        - createTable:
+            tableName: warehouse
+            columns:
+              - column:
+                  name: id
+                  type: CHAR(32)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_modified_date
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: inventory_order
+            columns:
+              - column:
+                  name: id
+                  type: CHAR(32)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: currency
+                  type: CHAR(3)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ordered_type
+                  type: VARCHAR(5)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ordered_price
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ordered_date
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_modified_date
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: inventory_id
+                  type: CHAR(32)
+        - createTable:
+            tableName: inventory
+            columns:
+              - column:
+                  name: id
+                  type: CHAR(32)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: sku
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_date
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_modified_date
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: warehouse_id
+                  type: CHAR(32)
+              - column:
+                  name: inventory_order_id
+                  type: CHAR(32)
+        - addForeignKeyConstraint:
+            baseColumnNames: warehouse_id
+            baseTableName: inventory
+            constraintName: fk_inventory_ref_warehouse
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: warehouse
+        - addForeignKeyConstraint:
+            baseColumnNames: inventory_order_id
+            baseTableName: inventory
+            constraintName: fk_inventory_ref_inventory_order
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: inventory_order
+        - addForeignKeyConstraint:
+            baseColumnNames: inventory_id
+            baseTableName: inventory_order
+            constraintName: fk_inventory_order_ref_inventory
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: inventory

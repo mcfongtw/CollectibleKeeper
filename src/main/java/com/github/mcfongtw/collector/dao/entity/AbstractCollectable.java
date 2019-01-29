@@ -1,0 +1,19 @@
+package com.github.mcfongtw.collector.dao.entity;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class AbstractCollectable extends AbstractEntity {
+
+    @Column(name = "sku", nullable = false)
+    protected String sku;
+
+    @Column(name = "name", nullable = false)
+    protected String name;
+}
