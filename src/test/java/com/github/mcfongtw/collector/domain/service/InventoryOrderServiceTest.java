@@ -107,6 +107,7 @@ public class InventoryOrderServiceTest {
 
         inventoryOrderService.saveAndFlush(inventoryOrder2);
 
+
         //Test Before
         Assert.assertEquals(inventoryOrderService.getListOfOrderBeforePurchasedDate(Date.from(Instant.now())).size(), 2);
         Assert.assertEquals(inventoryOrderService.getListOfOrderBeforePurchasedDate(Date.from(Instant.EPOCH)).size(), 0);

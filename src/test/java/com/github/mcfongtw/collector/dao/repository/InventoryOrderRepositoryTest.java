@@ -5,6 +5,7 @@ import com.github.mcfongtw.collector.dao.entity.Inventory;
 import com.github.mcfongtw.collector.dao.entity.InventoryOrder;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +36,17 @@ public class InventoryOrderRepositoryTest {
     @Autowired
     private InventoryOrderRepository inventoryOrderRepository;
 
+    @Transactional
     @Test
-    public void testFindDefaultOrderByIdViaCrudRepository() {
+    public void testFindDefaultOrderByIdViaCrudRepository() throws InterruptedException {
         InventoryOrder inventoryOrder = new InventoryOrder();
         inventoryOrder.setOrderedDate(Date.from(Instant.now()));
         inventoryOrder.setOrderedType(ORDER_TYPE_BUY);
         inventoryOrder.setOrderedPrice(new Double(10.00));
 
         inventoryOrderRepository.save(inventoryOrder);
+
+        Thread.sleep(100);
 
         Assert.assertTrue(inventoryOrderRepository.findById(inventoryOrder.getId()).isPresent());
         Assert.assertEquals(inventoryOrderRepository.findById(inventoryOrder.getId()).get().getCurrency(), InventoryOrder.DEFAULT_CURRENCY_TYPE);
@@ -52,8 +56,9 @@ public class InventoryOrderRepositoryTest {
         Assert.assertTrue(inventoryOrderRepository.findById(inventoryOrder.getId()).get().getLastModifiedDate().before(Date.from(Instant.now())));
     }
 
+    @Transactional
     @Test
-    public void testFindOrderWithDifferentCurrencyByIdViaCrudRepository() {
+    public void testFindOrderWithDifferentCurrencyByIdViaCrudRepository() throws InterruptedException {
         InventoryOrder inventoryOrder = new InventoryOrder();
         inventoryOrder.setCurrency(InventoryOrder.Currency.USD);
         inventoryOrder.setOrderedDate(Date.from(Instant.now()));
@@ -61,6 +66,8 @@ public class InventoryOrderRepositoryTest {
         inventoryOrder.setOrderedPrice(new Double(10.00));
 
         inventoryOrderRepository.save(inventoryOrder);
+
+        Thread.sleep(100);
 
         Assert.assertTrue(inventoryOrderRepository.findById(inventoryOrder.getId()).isPresent());
         Assert.assertEquals(inventoryOrderRepository.findById(inventoryOrder.getId()).get().getCurrency(), InventoryOrder.Currency.USD);
@@ -72,13 +79,15 @@ public class InventoryOrderRepositoryTest {
 
     @Transactional
     @Test
-    public void testFindDefaultOrderByIdViaJpaRepository() {
+    public void testFindDefaultOrderByIdViaJpaRepository() throws InterruptedException {
         InventoryOrder inventoryOrder = new InventoryOrder();
         inventoryOrder.setOrderedDate(Date.from(Instant.now()));
         inventoryOrder.setOrderedType(ORDER_TYPE_BUY);
         inventoryOrder.setOrderedPrice(new Double(10.00));
 
         inventoryOrderRepository.save(inventoryOrder);
+
+        Thread.sleep(100);
 
         Assert.assertNotNull(inventoryOrderRepository.getOne(inventoryOrder.getId()));
         Assert.assertEquals(inventoryOrderRepository.getOne(inventoryOrder.getId()).getCurrency(), InventoryOrder.DEFAULT_CURRENCY_TYPE);
@@ -88,15 +97,25 @@ public class InventoryOrderRepositoryTest {
         Assert.assertTrue(inventoryOrderRepository.getOne(inventoryOrder.getId()).getLastModifiedDate().before(Date.from(Instant.now())));
     }
 
+    /*
+     * XXX: If your test is @Transactional, it will rollback the transaction at the end of each test method by default.
+     * However, as using this arrangement with either RANDOM_PORT or DEFINED_PORT implicitly provides a real servlet environment,
+     * HTTP client and server will run in separate threads, thus separate transactions. Any transaction initiated on the server
+     * won’t rollback in this case.
+     */
+    //TODO: Use separate tests for web controller layer and database layer in case of Unit testing
+
     //    @WithMockUser(username="user")
+    @Ignore
     @Test
-    public void testGetDefaultOrderByIdViaRestfulAPI() {
+    public void testGetDefaultOrderByIdViaRestfulAPI() throws InterruptedException {
         InventoryOrder inventoryOrder = new InventoryOrder();
-        inventoryOrder.setOrderedDate(Date.from(Instant.now()));
+        inventoryOrder.setOrderedDate(Date.from(Instant.parse("2215-01-01T10:15:30.000Z")));
         inventoryOrder.setOrderedType(ORDER_TYPE_BUY);
-        inventoryOrder.setOrderedPrice(new Double(10.00));
+        inventoryOrder.setOrderedPrice(new Double(-1.00));
 
         inventoryOrderRepository.save(inventoryOrder);
+
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromPath("/orders/{id}");
         Map<String, Object> uriParams = new HashMap<String, Object>();

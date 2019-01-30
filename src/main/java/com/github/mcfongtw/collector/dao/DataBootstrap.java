@@ -3,7 +3,7 @@ package com.github.mcfongtw.collector.dao;
 import com.github.mcfongtw.collector.dao.entity.Inventory;
 import com.github.mcfongtw.collector.dao.entity.InventoryOrder;
 import com.github.mcfongtw.collector.dao.entity.Warehouse;
-import com.github.mcfongtw.collector.dao.repository.InventoryRepository;
+import com.github.mcfongtw.collector.domain.service.InventoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +23,7 @@ import static com.github.mcfongtw.collector.dao.entity.InventoryOrder.ORDER_TYPE
 public class DataBootstrap implements ApplicationRunner {
 
     @Autowired
-    private InventoryRepository inventoryRepository;
+    private InventoryService inventoryService;
 
     @Value("${production.mode}")
     private String productionMode;
@@ -31,7 +31,7 @@ public class DataBootstrap implements ApplicationRunner {
     @Transactional
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        long count = inventoryRepository.count();
+        long count = inventoryService.count();
         log.info("inventory count: [{}]", count);
 
         boolean isProductionMode = Boolean.parseBoolean(productionMode);
@@ -54,7 +54,7 @@ public class DataBootstrap implements ApplicationRunner {
             inventoryOrder1.setInventory(inventory1);
             inventory1.setInventoryOrder(inventoryOrder1);
 
-            inventoryRepository.save(inventory1);
+            inventoryService.saveAndFlush(inventory1);
 
             Inventory inventory2 = new Inventory();
             inventory2.setName("222");
@@ -69,7 +69,7 @@ public class DataBootstrap implements ApplicationRunner {
 
             inventory2.setInventoryOrder(inventoryOrder2);
 
-            inventoryRepository.save(inventory2);
+            inventoryService.saveAndFlush(inventory2);
         }
     }
 }

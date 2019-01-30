@@ -40,6 +40,11 @@ public class InventoryOrderService implements CRUDService<InventoryOrder>{
         inventoryOrderRepository.deleteById(uuid);
     }
 
+    @Override
+    public int count() {
+        return findAll().size();
+    }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public List<InventoryOrder> getListOfOrderAbovePurchasedPrice(Double purchasedPrice) {
