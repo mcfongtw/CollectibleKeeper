@@ -21,7 +21,7 @@ import static com.github.mcfongtw.collector.dao.entity.InventoryOrder.ORDER_TYPE
 
 @Slf4j
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = CollectorApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = CollectorApplication.class)
 public class InventoryOrderServiceTest {
 
     @Autowired

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Transactional
@@ -26,8 +27,8 @@ public class InventoryOrderService implements CRUDService<InventoryOrder>{
     }
 
     @Override
-    public InventoryOrder getOne(String uuid) {
-        return inventoryOrderRepository.getOne(uuid);
+    public Optional<InventoryOrder> findById(String id) {
+        return inventoryOrderRepository.findById(id);
     }
 
     @Override

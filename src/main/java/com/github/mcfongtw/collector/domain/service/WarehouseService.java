@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Transactional
@@ -23,8 +24,8 @@ public class WarehouseService implements CRUDService<Warehouse> {
     }
 
     @Override
-    public Warehouse getOne(String uuid) {
-        return warehouseRepository.getOne(uuid);
+    public Optional<Warehouse> findById(String id) {
+        return warehouseRepository.findById(id);
     }
 
     @Override

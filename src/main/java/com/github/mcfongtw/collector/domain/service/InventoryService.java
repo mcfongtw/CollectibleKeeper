@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Transactional
@@ -23,8 +24,8 @@ public class InventoryService implements CRUDService<Inventory> {
     }
 
     @Override
-    public Inventory getOne(String uuid) {
-        return inventoryRepository.getOne(uuid);
+    public Optional<Inventory> findById(String id) {
+        return inventoryRepository.findById(id);
     }
 
     @Override
