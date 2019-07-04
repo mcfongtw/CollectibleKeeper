@@ -27,11 +27,8 @@ import static com.github.mcfongtw.collector.dao.entity.InventoryOrder.ORDER_TYPE
 
 @Slf4j
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = CollectorApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = CollectorApplication.class)
 public class InventoryOrderRepositoryTest {
-
-    @Autowired
-    private TestRestTemplate testRestTemplate;
 
     @Autowired
     private InventoryOrderRepository inventoryOrderRepository;
@@ -95,41 +92,6 @@ public class InventoryOrderRepositoryTest {
         Assert.assertTrue(inventoryOrderRepository.getOne(inventoryOrder.getId()).getCreatedDate().before(Date.from(Instant.now())));
 
         Assert.assertTrue(inventoryOrderRepository.getOne(inventoryOrder.getId()).getLastModifiedDate().before(Date.from(Instant.now())));
-    }
-
-    /*
-     * XXX: If your test is @Transactional, it will rollback the transaction at the end of each test method by default.
-     * However, as using this arrangement with either RANDOM_PORT or DEFINED_PORT implicitly provides a real servlet environment,
-     * HTTP client and server will run in separate threads, thus separate transactions. Any transaction initiated on the server
-     * won’t rollback in this case.
-     */
-    //TODO: Use separate tests for web controller layer and database layer in case of Unit testing
-
-    //    @WithMockUser(username="user")
-    @Ignore
-    @Test
-    public void testGetDefaultOrderByIdViaRestfulAPI() throws InterruptedException {
-        InventoryOrder inventoryOrder = new InventoryOrder();
-        inventoryOrder.setOrderedDate(Date.from(Instant.parse("2215-01-01T10:15:30.000Z")));
-        inventoryOrder.setOrderedType(ORDER_TYPE_BUY);
-        inventoryOrder.setOrderedPrice(new Double(-1.00));
-
-        inventoryOrderRepository.save(inventoryOrder);
-
-
-        UriComponentsBuilder builder = UriComponentsBuilder.fromPath("/orders/{id}");
-        Map<String, Object> uriParams = new HashMap<String, Object>();
-        uriParams.put("id", inventoryOrder.getId());
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        HttpEntity<Object> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> response = testRestTemplate.exchange(
-                builder.buildAndExpand(uriParams).toUri().toString(),
-                HttpMethod.GET, entity, String.class);
-        Assert.assertTrue("testGetInventoryOrders Fail:\n" + response.getBody(),
-                response.getStatusCode().is2xxSuccessful());
     }
 
     @Transactional

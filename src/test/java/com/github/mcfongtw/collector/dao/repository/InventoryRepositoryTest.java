@@ -27,14 +27,12 @@ import java.util.Map;
 import static com.github.mcfongtw.collector.dao.entity.InventoryOrder.ORDER_TYPE_BUY;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = CollectorApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = CollectorApplication.class)
 public class InventoryRepositoryTest {
 
     @Autowired
     private InventoryRepository inventoryRepository;
 
-    @Autowired
-    private TestRestTemplate testRestTemplate;
 
     @Test
     public void testFindInventoryByIdViaCrudRepository() {
@@ -77,29 +75,6 @@ public class InventoryRepositoryTest {
         Assert.assertEquals(inventoryRepository.getOne(inventory.getId()).getSku(), "xxx");
     }
 
-//    @WithMockUser(username="user")
-    @Test
-    public void testGetInventoryByIdViaRestfulAPI() {
-        Inventory inventory = new Inventory();
-        inventory.setName("test");
-        inventory.setSku("xxx");
-
-        inventoryRepository.save(inventory);
-
-        UriComponentsBuilder builder = UriComponentsBuilder.fromPath("/inventories/{id}");
-        Map<String, Object> uriParams = new HashMap<String, Object>();
-        uriParams.put("id", inventory.getId());
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        HttpEntity<Object> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> response = testRestTemplate.exchange(
-                builder.buildAndExpand(uriParams).toUri().toString(),
-                HttpMethod.GET, entity, String.class);
-        Assert.assertTrue("testGetInventories Fail:\n" + response.getBody(),
-                response.getStatusCode().is2xxSuccessful());
-    }
 
     @Transactional
     @Test

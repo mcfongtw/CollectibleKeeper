@@ -28,6 +28,15 @@ public class WarehouseService implements CRUDService<Warehouse> {
         return warehouseRepository.findById(id);
     }
 
+    public Optional<Warehouse> findByName(String name) {
+        for(Warehouse warehouse: warehouseRepository.findAll()) {
+            if(warehouse.getName().equals(name)) {
+                return Optional.of(warehouse);
+            }
+        }
+        return Optional.empty();
+    }
+
     @Override
     public Warehouse saveAndFlush(Warehouse entity) {
         return warehouseRepository.saveAndFlush(entity);

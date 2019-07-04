@@ -24,11 +24,8 @@ import java.util.Map;
 
 @Slf4j
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = CollectorApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = CollectorApplication.class)
 public class WarehouseRepositoryTest {
-
-    @Autowired
-    private TestRestTemplate testRestTemplate;
 
     @Autowired
     private WarehouseRepository warehouseRepository;
@@ -70,29 +67,6 @@ public class WarehouseRepositoryTest {
 
         Assert.assertTrue(warehouseRepository.getOne(warehouse.getId()) != null);
         Assert.assertEquals(warehouseRepository.getOne(warehouse.getId()).getName(), "test");
-    }
-
-    //    @WithMockUser(username="user")
-    @Test
-    public void testGetWarehouseByIdViaRestfulAPI() {
-        Warehouse warehouse = new Warehouse();
-        warehouse.setName("test");
-
-        warehouseRepository.save(warehouse);
-
-        UriComponentsBuilder builder = UriComponentsBuilder.fromPath("/warehouses/{id}");
-        Map<String, Object> uriParams = new HashMap<String, Object>();
-        uriParams.put("id", warehouse.getId());
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        HttpEntity<Object> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> response = testRestTemplate.exchange(
-                builder.buildAndExpand(uriParams).toUri().toString(),
-                HttpMethod.GET, entity, String.class);
-        Assert.assertTrue("testGetWarehouses Fail:\n" + response.getBody(),
-                response.getStatusCode().is2xxSuccessful());
     }
 
     @Test

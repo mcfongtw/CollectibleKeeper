@@ -1,5 +1,6 @@
 package com.github.mcfongtw.collector.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -28,6 +29,7 @@ public class Inventory extends AbstractCollectable {
     @JoinColumn(name = "warehouse_id")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @JsonIgnore
     private Warehouse warehouse;
 
 
@@ -39,5 +41,6 @@ public class Inventory extends AbstractCollectable {
     @JoinColumn(name = "inventory_order_id")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @JsonIgnore
     private InventoryOrder inventoryOrder;
 }
