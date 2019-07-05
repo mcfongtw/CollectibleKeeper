@@ -28,7 +28,7 @@ public class WarehouseController {
     private WarehouseRepository warehouseRepository;
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody Warehouse warehouse) {
+    public ResponseEntity<Warehouse> create(@RequestBody Warehouse warehouse) {
         log.debug("create");
 
         Warehouse savedWarehouse = warehouseService.saveAndFlush(warehouse);
@@ -40,7 +40,7 @@ public class WarehouseController {
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(savedWarehouse.getId()).toUri();
 
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.created(location).body(savedWarehouse);
     }
 
     @GetMapping("/all")

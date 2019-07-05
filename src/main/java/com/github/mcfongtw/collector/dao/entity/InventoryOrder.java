@@ -1,5 +1,7 @@
 package com.github.mcfongtw.collector.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
@@ -38,6 +40,7 @@ public class InventoryOrder extends AbstractEntity {
             fetch = FetchType.LAZY,
             orphanRemoval = true
     )
+    @JsonIgnore
     private Inventory inventory;
 
 

@@ -40,18 +40,14 @@ public class WarehouseControllerTest {
         warehouse.setName("testCreate");
         HttpEntity<Warehouse> createdReq = new HttpEntity<>(warehouse, headers);
 
-        ResponseEntity<Void> createResponseEntity = this.testRestTemplate.postForEntity(BASE_URL, createdReq, Void.class);
+        ResponseEntity<Warehouse> createResponseEntity = this.testRestTemplate.postForEntity(BASE_URL, createdReq, Warehouse.class);
 
         log.info(">>>>>>>>>>>>>>>>>>>>> [{}]", createResponseEntity.getHeaders());
 
         Assert.assertEquals(createResponseEntity.getStatusCode(), HttpStatus.CREATED);
 
-        ResponseEntity<Warehouse> getResponseEntity = this.testRestTemplate.getForEntity(BASE_URL + "/name/testCreate", Warehouse.class);
-        if(getResponseEntity.getBody() == null) {
-            Assert.fail();
-        }
 
-        warehouse = getResponseEntity.getBody();
+        warehouse = createResponseEntity.getBody();
         warehouse.setName("testUpdate");
         HttpEntity<Warehouse> updatedReq = new HttpEntity<>(warehouse, headers);
 
