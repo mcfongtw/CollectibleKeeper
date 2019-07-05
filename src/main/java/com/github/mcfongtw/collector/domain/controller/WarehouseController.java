@@ -1,5 +1,6 @@
 package com.github.mcfongtw.collector.domain.controller;
 
+import com.github.mcfongtw.collector.dao.entity.Inventory;
 import com.github.mcfongtw.collector.dao.entity.Warehouse;
 import com.github.mcfongtw.collector.dao.repository.WarehouseRepository;
 import com.github.mcfongtw.collector.domain.service.WarehouseService;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -75,6 +77,20 @@ public class WarehouseController {
 
         if(result.isPresent()) {
             return ResponseEntity.ok(result.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/inventories/{id}")
+    @ResponseBody
+    public ResponseEntity<Set<Inventory>> findInventoriesById(@PathVariable(name = "id") String id) {
+        log.debug("findInventoriesById with [{}]", id);
+
+        Optional<Warehouse> result = warehouseService.findById(id);
+
+        if(result.isPresent()) {
+            return ResponseEntity.ok(result.get().getInventories());
         } else {
             return ResponseEntity.notFound().build();
         }

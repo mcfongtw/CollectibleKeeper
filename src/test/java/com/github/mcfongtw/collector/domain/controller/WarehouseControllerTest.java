@@ -1,5 +1,6 @@
 package com.github.mcfongtw.collector.domain.controller;
 
+import com.github.mcfongtw.collector.dao.entity.Inventory;
 import com.github.mcfongtw.collector.dao.entity.Warehouse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
@@ -84,6 +85,17 @@ public class WarehouseControllerTest {
     }
 
     @Test
+    public void testGetWarehouseByNameNotFound() {
+        ResponseEntity<Warehouse> responseEntity = this.testRestTemplate.getForEntity(BASE_URL + "/name/ABCADFADFADSFADSFADSF", Warehouse.class);
+
+        log.info(">>>>>>>>>>>>>>>>>>>>> [{}]", responseEntity.getHeaders().toString());
+        log.info(">>>>>>>>>>>>>>>>>>>>> [{}]", responseEntity.getBody());
+
+        Assert.assertEquals(responseEntity.getStatusCode(), HttpStatus.NOT_FOUND);
+        Assert.assertNull(responseEntity.getBody());
+    }
+
+    @Test
     public void testCount() {
         ResponseEntity<Integer> responseEntity = this.testRestTemplate.getForEntity(BASE_URL + "/count", Integer.class);
 
@@ -101,6 +113,26 @@ public class WarehouseControllerTest {
         ResponseEntity<Warehouse[]> responseEntity = this.testRestTemplate.getForEntity(BASE_URL + "/all", Warehouse[].class);
 
         Assert.assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
+
+        if(responseEntity.getBody() == null) {
+            Assert.fail();
+        }
+
+        Assert.assertTrue(responseEntity.getBody().length > 0);
+    }
+
+    @Test
+    public void testGetInventories() {
+        ResponseEntity<Warehouse> getRespEntity = this.testRestTemplate.getForEntity(BASE_URL + "/name/Taipei", Warehouse.class);
+
+        Assert.assertEquals(getRespEntity.getStatusCode(), HttpStatus.OK);
+
+        ResponseEntity<Inventory[]> responseEntity = this.testRestTemplate.getForEntity(BASE_URL + "/inventories/" + getRespEntity.getBody().getId(), Inventory[].class);
+
+        log.info(">>>>>>>>>>>>>>>>>>>>> [{}]", responseEntity.getHeaders().toString());
+        log.info(">>>>>>>>>>>>>>>>>>>>> [{}]", responseEntity.getBody());
+
+        Assert.assertEquals(getRespEntity.getStatusCode(), HttpStatus.OK);
 
         if(responseEntity.getBody() == null) {
             Assert.fail();
