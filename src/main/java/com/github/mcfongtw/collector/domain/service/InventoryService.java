@@ -28,6 +28,24 @@ public class InventoryService implements CRUDService<Inventory> {
         return inventoryRepository.findById(id);
     }
 
+    public Optional<Inventory> findByName(String name) {
+        for(Inventory inventory: inventoryRepository.findAll()) {
+            if(inventory.getName().equals(name)) {
+                return Optional.of(inventory);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Inventory> findBySku(String sku) {
+        for(Inventory inventory: inventoryRepository.findAll()) {
+            if(inventory.getSku().equals(sku)) {
+                return Optional.of(inventory);
+            }
+        }
+        return Optional.empty();
+    }
+
     @Override
     public Inventory saveAndFlush(Inventory entity) {
         return inventoryRepository.saveAndFlush(entity);
