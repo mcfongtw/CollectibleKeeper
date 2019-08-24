@@ -58,13 +58,30 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
         </dependency>
-
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+
+        <!-- Thymeleaf View -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <!-- hot swapping, disable cache for template, enable live reload -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!-- Optional, for bootstrap -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>4.2.1</version>
+        </dependency>
+
 
         <!-- Testing -->
         <dependency>

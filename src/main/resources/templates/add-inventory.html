@@ -1,0 +1,19 @@
+<form action="#" th:action="@{/view/inventories/save}" th:object="${inventory}" method="post">
+    <label for="name">Name</label>
+    <input type="text" th:field="*{name}" id="name" placeholder="Name">
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+
+    <label for="sku">Sku</label>
+    <input type="text" th:field="*{sku}" id="sku" placeholder="SKU">
+    <span th:if="${#fields.hasErrors('sku')}" th:errors="*{sku}"></span>
+
+    <label for="warehouse">Warehouse</label>
+    <select th:field="*{warehouse}", id="warehouse">
+        <option th:each="key : ${mappedWarehouses.keySet()}"
+                th:value="${key}"
+                th:utext="${mappedWarehouses.get(key)}">
+        </option>
+    </select>
+
+    <input type="submit" value="Add Inventory">
+</form>

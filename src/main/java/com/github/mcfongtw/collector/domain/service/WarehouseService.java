@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -50,5 +52,15 @@ public class WarehouseService implements CRUDService<Warehouse> {
     @Override
     public int count() {
         return findAll().size();
+    }
+
+    public Map<String, String> getMappedWarehouses() {
+        Map<String, String> result = new HashMap<>();
+
+        for(Warehouse warehouse: warehouseRepository.findAll()) {
+            result.put(warehouse.getId(), warehouse.getName());
+        }
+
+        return result;
     }
 }

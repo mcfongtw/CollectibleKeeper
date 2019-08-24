@@ -1,0 +1,27 @@
+<form action="#" th:action="@{/view/orders/save}" th:object="${inventoryOrder}" method="post">
+    <label for="currency">Currency</label>
+    <select name="currency", id="currency">
+        <option th:each="currency : ${T(com.github.mcfongtw.collector.dao.entity.InventoryOrder.Currency).values()}"
+                th:value="${currency}" th:text="${currency}"></option>
+    </select>
+
+    <label for="orderType">Type</label>
+    <select name="orderType", id="orderType">
+        <option th:each="orderType : ${T(com.github.mcfongtw.collector.dao.entity.InventoryOrder.OrderType).values()}"
+                th:value="${orderType}" th:text="${orderType}"></option>
+    </select>
+
+    <label for="orderedPrice">Price</label>
+    <input type="text" th:field="*{orderedPrice}" id="orderedPrice" placeholder="OrderedPrice">
+    <span th:if="${#fields.hasErrors('orderedPrice')}" th:errors="*{orderedPrice}"></span>
+
+    <label for="inventory">Inventory</label>
+    <select th:field="*{inventory}", id="inventory">
+        <option th:each="key : ${mappedInventories.keySet()}"
+                th:value="${key}"
+                th:utext="${mappedInventories.get(key)}">
+        </option>
+    </select>
+
+    <input type="submit" value="Add Order">
+</form>

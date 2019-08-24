@@ -1,0 +1,27 @@
+<table>
+    <thead>
+        <tr>
+            <th> Id </th>
+            <th> Currency </th>
+            <th> Type </th>
+            <th> Price </th>
+            <th> Ordered Date </th>
+            <th> Inventory </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:if="${orders.empty}">
+            <td colspan="4"> No Inventories Available </td>
+        </tr>
+        <tr th:each="order : ${orders}">
+            <td><span th:text="${order.id}"> Id </span></td>
+            <td><span th:text="${order.currency}"> Currency </span></td>
+            <td><span th:text="${order.orderedType}"> Type </span></td>
+            <td><span th:text="${order.orderedPrice}"> Price </span></td>
+            <td><span th:text="${order.orderedDate}"> Date </span></td>
+            <td><span th:text="${order.inventory.name}"> Inventory </span></td>
+        </tr>
+    </tbody>
+</table>
+
+<a href="/">Home</a>

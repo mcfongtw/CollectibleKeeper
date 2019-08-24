@@ -1,0 +1,23 @@
+<table>
+    <thead>
+        <tr>
+            <th> Id </th>
+            <th> Name </th>
+            <th> Sku </th>
+            <th> Warehouse </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:if="${inventories.empty}">
+            <td colspan="2"> No Inventories Available </td>
+        </tr>
+        <tr th:each="inventory : ${inventories}">
+            <td><span th:text="${inventory.id}"> Id </span></td>
+            <td><span th:text="${inventory.name}"> Name </span></td>
+            <td><span th:text="${inventory.sku}"> Sku </span></td>
+            <td><span th:text="${inventory.warehouse.name}"> Warehouse </span></td>
+        </tr>
+    </tbody>
+</table>
+
+<a href="/">Home</a>

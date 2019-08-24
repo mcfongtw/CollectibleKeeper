@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -59,5 +61,15 @@ public class InventoryService implements CRUDService<Inventory> {
     @Override
     public int count() {
         return findAll().size();
+    }
+
+    public Map<String, String> getMappedInventories() {
+        Map<String, String> result = new HashMap<>();
+
+        for(Inventory inventory: inventoryRepository.findAll()) {
+            result.put(inventory.getId(), inventory.getName());
+        }
+
+        return result;
     }
 }

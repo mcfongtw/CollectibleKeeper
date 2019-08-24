@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Collectible Keeper</title>
+
+    <link rel="stylesheet" th:href="@{webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+
+</head>
+
+<body>
+
+<main role="main" class="container">
+
+    <div class="starter-template">
+        <h1>Collectible Keeper</h1>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th> Warehouses </th>
+                <th> Inventories </th>
+                <th> Orders </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th> <a href="/view/warehouses/all">Show Warehousies</a> </th>
+                <th> <a href="/view/inventories/all">Show Inventories</a> </th>
+                <th> <a href="/view/orders/all">Show Orders</a> </th>
+            </tr>
+            <tr>
+                <th> <a href="/view/warehouses/new">1. New Warehouse</a> </th>
+                <th> <a href="/view/inventories/new">2. New Inventory</a> </th>
+                <th> <a href="/view/orders/new">3. New Order</a> </th>
+            </tr>
+        </tbody>
+    </table>
+
+</main>
+<!-- /.container -->
+
+<script type="text/javascript" th:src="@{webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
+</body>
+</html>
