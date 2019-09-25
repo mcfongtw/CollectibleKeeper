@@ -28,6 +28,7 @@ public class WarehouseController {
     private WarehouseRepository warehouseRepository;
 
     @PostMapping
+    @ResponseBody
     public ResponseEntity<Warehouse> create(@RequestBody Warehouse warehouse) {
         log.debug("create");
 
@@ -44,6 +45,7 @@ public class WarehouseController {
     }
 
     @GetMapping("/all")
+    @ResponseBody
     public ResponseEntity<List<Warehouse>> findAll() {
         return ResponseEntity.ok(warehouseService.findAll());
     }

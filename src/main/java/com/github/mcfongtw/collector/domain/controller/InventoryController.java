@@ -26,6 +26,7 @@ public class InventoryController {
     private InventoryRepository inventoryRepository;
 
     @PostMapping
+    @ResponseBody
     public ResponseEntity<Inventory> create(@RequestBody Inventory warehouse) {
         log.debug("create");
 

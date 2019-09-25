@@ -31,6 +31,7 @@ public class InventoryOrderController {
     private SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
     @PostMapping
+    @ResponseBody
     public ResponseEntity<InventoryOrder> create(@RequestBody InventoryOrder inventoryOrder) {
         log.debug("create");
 
@@ -47,6 +48,7 @@ public class InventoryOrderController {
     }
 
     @GetMapping("/all")
+    @ResponseBody
     public ResponseEntity<List<InventoryOrder>> findAll() {
         log.debug("findAll");
 
@@ -107,6 +109,7 @@ public class InventoryOrderController {
 
 
     @GetMapping("/search/above/buy/{price}")
+    @ResponseBody
     public ResponseEntity<List<InventoryOrder>> getListOfOrderAbovePurchasedPrice(@PathVariable(name = "price") String price) {
         log.debug("getListOfOrderAbovePurchasedPrice");
 
@@ -116,6 +119,7 @@ public class InventoryOrderController {
     }
 
     @GetMapping("/search/above/sold/{price}")
+    @ResponseBody
     public ResponseEntity<List<InventoryOrder>> getListOfOrderAboveSoldPrice(@PathVariable(name = "price") String price) {
         log.debug("getListOfOrderAboveSoldPrice");
 
@@ -125,6 +129,7 @@ public class InventoryOrderController {
     }
 
     @GetMapping("/search/below/buy/{price}")
+    @ResponseBody
     public ResponseEntity<List<InventoryOrder>> getListOfOrderBelowPurchasedPrice(@PathVariable(name = "price") String price) {
         log.debug("getListOfOrderBelowPurchasedPrice");
 
@@ -134,6 +139,7 @@ public class InventoryOrderController {
     }
 
     @GetMapping("/search/below/sold/{price}")
+    @ResponseBody
     public ResponseEntity<List<InventoryOrder>> getListOfOrderBelowSoldPrice(@PathVariable(name = "price") String price) {
         log.debug("getListOfOrderBelowSoldPrice");
 
@@ -143,6 +149,7 @@ public class InventoryOrderController {
     }
 
     @GetMapping("/search/before/buy/{date}")
+    @ResponseBody
     public ResponseEntity<List<InventoryOrder>> getListOfOrderBeforePurchasedDate(@PathVariable(name = "date") String date) {
         log.debug("getListOfOrderBeforePurchasedDate");
 
@@ -157,6 +164,7 @@ public class InventoryOrderController {
     }
 
     @GetMapping("/search/before/sold/{date}")
+    @ResponseBody
     public ResponseEntity<List<InventoryOrder>> getListOfOrderBeforeSoldDate(@PathVariable(name = "date") String date) {
         log.debug("getListOfOrderBeforeSoldDate");
 
@@ -171,6 +179,7 @@ public class InventoryOrderController {
     }
 
     @GetMapping("/search/after/buy/{date}")
+    @ResponseBody
     public ResponseEntity<List<InventoryOrder>> getListOfOrderAfterPurchasedDate(@PathVariable(name = "date") String date) {
         log.debug("getListOfOrderAfterPurchasedDate");
 
@@ -185,6 +194,7 @@ public class InventoryOrderController {
     }
 
     @GetMapping("/search/after/sold/{date}")
+    @ResponseBody
     public ResponseEntity<List<InventoryOrder>> getListOfOrderAfterSoldDate(@PathVariable(name = "date") String date) {
         log.debug("getListOfOrderAfterSoldDate");
 
