@@ -33,6 +33,26 @@ public class InventoryOrderRepositoryTest {
     @Autowired
     private InventoryOrderRepository inventoryOrderRepository;
 
+    @Test
+    public void testUpdateOrder() {
+        InventoryOrder origOrder = new InventoryOrder();
+        origOrder.setOrderedDate(Date.from(Instant.now()));
+        origOrder.setOrderedType(ORDER_TYPE_BUY);
+        origOrder.setOrderedPrice(new Double(10.00));
+
+        inventoryOrderRepository.saveAndFlush(origOrder);
+
+        int origSize = inventoryOrderRepository.findAll().size();
+
+        origOrder.setOrderedPrice(1.23);
+
+        InventoryOrder updatedOrder = inventoryOrderRepository.saveAndFlush(origOrder);
+
+        Assert.assertEquals(updatedOrder.getOrderedPrice(), 1.23, 0.0);
+        Assert.assertEquals(updatedOrder.getId(), origOrder.getId());
+        Assert.assertEquals(inventoryOrderRepository.findAll().size(), origSize);
+    }
+
     @Transactional
     @Test
     public void testFindDefaultOrderByIdViaCrudRepository() throws InterruptedException {

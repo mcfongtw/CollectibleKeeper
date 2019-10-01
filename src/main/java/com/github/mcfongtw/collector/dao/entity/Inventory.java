@@ -9,9 +9,10 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @Data
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "inventory")
 @Entity(name = "Inventory")
-@EqualsAndHashCode(callSuper = true)
 public class Inventory extends AbstractCollectable {
 
     @EqualsAndHashCode.Exclude

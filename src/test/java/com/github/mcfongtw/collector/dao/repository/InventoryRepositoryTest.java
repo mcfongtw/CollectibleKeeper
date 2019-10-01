@@ -75,6 +75,25 @@ public class InventoryRepositoryTest {
         Assert.assertEquals(inventoryRepository.getOne(inventory.getId()).getSku(), "xxx");
     }
 
+    @Test
+    public void testUpdateInventory() {
+        Inventory origInventory = new Inventory();
+        origInventory.setName("test");
+        origInventory.setSku("sku");
+
+        inventoryRepository.save(origInventory);
+
+        int origSize = inventoryRepository.findAll().size();
+
+        origInventory.setName("test1");
+
+        Inventory updatedInventory = inventoryRepository.saveAndFlush(origInventory);
+
+        Assert.assertEquals(updatedInventory.getName(), "test1");
+        Assert.assertEquals(updatedInventory.getId(), origInventory.getId());
+        Assert.assertEquals(inventoryRepository.findAll().size(), origSize);
+
+    }
 
     @Transactional
     @Test

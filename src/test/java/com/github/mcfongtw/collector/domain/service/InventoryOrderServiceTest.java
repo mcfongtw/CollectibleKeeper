@@ -28,6 +28,26 @@ public class InventoryOrderServiceTest {
     private InventoryOrderService inventoryOrderService;
 
 
+    @Test
+    public void testUpdateOrder() {
+        InventoryOrder origOrder = new InventoryOrder();
+        origOrder.setOrderedDate(Date.from(Instant.now()));
+        origOrder.setOrderedType(ORDER_TYPE_BUY);
+        origOrder.setOrderedPrice(new Double(10.00));
+
+        inventoryOrderService.saveAndFlush(origOrder);
+
+        int origSize = inventoryOrderService.findAll().size();
+
+        origOrder.setOrderedPrice(1.23);
+
+        InventoryOrder updatedOrder = inventoryOrderService.saveAndFlush(origOrder);
+
+        Assert.assertEquals(updatedOrder.getOrderedPrice(), 1.23, 0.0);
+        Assert.assertEquals(updatedOrder.getId(), origOrder.getId());
+        Assert.assertEquals(inventoryOrderService.findAll().size(), origSize);
+    }
+
     @Transactional
     @Test
     public void testGetOrdersAccordingToPrice() {
@@ -68,7 +88,7 @@ public class InventoryOrderServiceTest {
 
         //Test Below
         Assert.assertEquals(inventoryOrderService.getListOfOrderBelowPurchasedPrice(1.00).size(), 0);
-        Assert.assertEquals(inventoryOrderService.getListOfOrderBelowPurchasedPrice(20.00).size(), 2);
+        Assert.assertEquals(inventoryOrderService.getListOfOrderBelowPurchasedPrice(20.00).size(), 3);
 
         Assert.assertEquals(inventoryOrderService.getListOfOrderBelowSoldPrice(1.00).size(), 0);
         Assert.assertEquals(inventoryOrderService.getListOfOrderBelowSoldPrice(20.00).size(), 2);

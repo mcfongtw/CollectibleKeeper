@@ -70,6 +70,25 @@ public class WarehouseRepositoryTest {
     }
 
     @Test
+    public void testUpdateWarehouse() {
+        Warehouse origWarehouse = new Warehouse();
+        origWarehouse.setName("test");
+
+        warehouseRepository.save(origWarehouse);
+
+        int origSize = warehouseRepository.findAll().size();
+
+        origWarehouse.setName("test1");
+
+        Warehouse updatedWarehouse = warehouseRepository.saveAndFlush(origWarehouse);
+
+        Assert.assertEquals(updatedWarehouse.getName(), "test1");
+        Assert.assertEquals(updatedWarehouse.getId(), origWarehouse.getId());
+        Assert.assertEquals(warehouseRepository.findAll().size(), origSize);
+
+    }
+
+    @Test
     public void testGetAndSaveAndRemoveInventoriesFromWarehouse() throws InterruptedException {
         Warehouse warehouse = new Warehouse();
         warehouse.setName("Taipei");

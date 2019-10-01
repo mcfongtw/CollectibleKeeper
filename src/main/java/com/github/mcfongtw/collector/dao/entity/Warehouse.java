@@ -1,14 +1,21 @@
 package com.github.mcfongtw.collector.dao.entity;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Data
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "warehouse")
 @Entity(name = "Warehouse")
 public class Warehouse extends AbstractEntity {
@@ -32,6 +39,12 @@ public class Warehouse extends AbstractEntity {
             fetch = FetchType.EAGER
     )
     private Set<Inventory> inventories = Sets.newHashSet();
+
+    //XXX: Returning a List for the sake of Theymeleaf Compatibile
+    // since a Set has no indexes.
+    public List<Inventory> getInventoriesAsList() {
+        return Lists.newArrayList(inventories);
+    }
 
     public void addInventory(Inventory inventory) {
         this.getInventories().add(inventory);

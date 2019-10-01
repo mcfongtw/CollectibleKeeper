@@ -4,15 +4,17 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Data
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "inventory_order")
 @Entity(name = "InventoryOrder")
-@EqualsAndHashCode(callSuper = true)
 public class InventoryOrder extends AbstractEntity {
 
     @EqualsAndHashCode.Exclude

@@ -1,5 +1,6 @@
 package com.github.mcfongtw.collector.domain.service;
 
+import com.github.mcfongtw.collector.dao.entity.Inventory;
 import com.github.mcfongtw.collector.dao.entity.Warehouse;
 import com.github.mcfongtw.collector.dao.repository.WarehouseRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +45,10 @@ public class WarehouseService implements CRUDService<Warehouse> {
         return warehouseRepository.saveAndFlush(entity);
     }
 
+    public Warehouse saveOrUpdate(Warehouse entity) {
+        return warehouseRepository.save(entity);
+    }
+
     @Override
     public void deleteById(String uuid) {
         warehouseRepository.deleteById(uuid);
@@ -54,7 +59,7 @@ public class WarehouseService implements CRUDService<Warehouse> {
         return findAll().size();
     }
 
-    public Map<String, String> getMappedWarehouses() {
+    public Map<String, String> getMappedWarehouseIdsAndNames() {
         Map<String, String> result = new HashMap<>();
 
         for(Warehouse warehouse: warehouseRepository.findAll()) {
