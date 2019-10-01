@@ -20,6 +20,7 @@
             <td><span th:text="${order.orderedPrice}"> Price </span></td>
             <td><span th:text="${order.orderedDate}"> Date </span></td>
             <td><span th:text="${order.inventory.name}"> Inventory </span></td>
+            <td><a th:href="@{/view/orders/edit/{id}(id=${order.id})}">Edit</a></td>
         </tr>
     </tbody>
 </table>

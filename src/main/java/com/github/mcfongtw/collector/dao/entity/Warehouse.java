@@ -40,12 +40,6 @@ public class Warehouse extends AbstractEntity {
     )
     private Set<Inventory> inventories = Sets.newHashSet();
 
-    //XXX: Returning a List for the sake of Theymeleaf Compatibile
-    // since a Set has no indexes.
-    public List<Inventory> getInventoriesAsList() {
-        return Lists.newArrayList(inventories);
-    }
-
     public void addInventory(Inventory inventory) {
         this.getInventories().add(inventory);
         inventory.setWarehouse(this);

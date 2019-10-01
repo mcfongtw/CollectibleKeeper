@@ -3,20 +3,20 @@
     <input type="text" th:field="*{name}" id="name" placeholder="Name">
     <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 
-    <!-- Hidden attributes for warehouse, DateTime object would be null after passing through template-->
+    <!-- Hidden attributes for warehouse so that DateTime object would NOT be null after passing through template-->
     <input type="hidden" th:field="*{id}" id="id">
     <input type="hidden" th:field="*{createdDate}" id="createdDate">
     <input type="hidden" th:field="*{lastModifiedDate}" id="lastModifiedDate">
 
-    <!-- Hidden attributes for warehouse.inventories -->
-    <th:block th:each="inventory, status : ${newWarehouse.inventoriesAsList}">
-        <input type="hidden" th:value="*{inventoriesAsList[__${status.index}__].id}" th:name="reqInvId">
-        <input type="hidden" th:value="*{inventoriesAsList[__${status.index}__].name}" th:name="reqInvName">
-        <input type="hidden" th:value="*{inventoriesAsList[__${status.index}__].sku}" th:name="reqInvSku">
-        <input type="hidden" th:value="*{inventoriesAsList[__${status.index}__].createdDate}" th:name="reqInvCreated">
-        <input type="hidden" th:value="*{inventoriesAsList[__${status.index}__].lastModifiedDate}" th:name="reqInvModified">
-    </th:block>
-
+    <!-- Hidden relations for warehouse.inventories -->
+    <div class="hidden-relation" style="display: none;">
+        <select type="hidden" th:field="*{inventories}", id="inventories">
+            <option th:each="key : ${inventoriesAsMap.keySet()}"
+                    th:value="${key}"
+                    th:utext="${inventoriesAsMap.get(key)}">
+            </option>
+        </select>
+    </div>
 
     <input type="submit" value="Update Warehouse">
 </form>

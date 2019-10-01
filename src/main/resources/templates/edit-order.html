@@ -1,4 +1,4 @@
-<form action="#" th:action="@{/view/orders/save}" th:object="${inventoryOrder}" method="post">
+<form action="#" th:action="@{/view/orders/update}" th:object="${newOrder}" method="post">
     <label for="currency">Currency</label>
     <select name="currency", id="currency">
         <option th:each="currency : ${T(com.github.mcfongtw.collector.dao.entity.InventoryOrder.Currency).values()}"
@@ -23,5 +23,10 @@
         </option>
     </select>
 
-    <input type="submit" value="Add Order">
+    <!-- Hidden attributes for order so that DateTime object would NOT be null after passing through template-->
+    <input type="hidden" th:field="*{id}" id="id">
+    <input type="hidden" th:field="*{createdDate}" id="createdDate">
+    <input type="hidden" th:field="*{lastModifiedDate}" id="lastModifiedDate">
+
+    <input type="submit" value="Update Order">
 </form>

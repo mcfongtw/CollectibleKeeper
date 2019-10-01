@@ -14,7 +14,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.*;
@@ -72,9 +71,7 @@ public class SimpleModelViewController {
 
     @GetMapping("view/inventories/new")
     public String addInventory(Inventory inventory, Model model) {
-        Map<String, String> mappedWarehouses = warehouseService.getMappedWarehouseIdsAndNames();
-
-        model.addAttribute("mappedWarehouses", mappedWarehouses);
+        model.addAttribute("warhousesAsMap", warehouseService.getWarhousesAsMap());
 
         //add-inventory.html
         return "add-inventory";
@@ -118,9 +115,7 @@ public class SimpleModelViewController {
 
     @GetMapping("view/orders/new")
     public String addOrder(InventoryOrder inventoryOrder, Model model) {
-        Map<String, String> mappedInventories = inventoryService.getMappedInventories();
-
-        model.addAttribute("mappedInventories", mappedInventories);
+        model.addAttribute("inventoriesAsMap", inventoryService.getInventoriesAsMap());
 
         //add-order.html
         return "add-order";
@@ -155,35 +150,15 @@ public class SimpleModelViewController {
         model.addAttribute("newWarehouse", entity);
         model.addAttribute("createdDate", entity.getCreatedDate());
         model.addAttribute("lastModifiedDate", entity.getLastModifiedDate());
-        model.addAttribute("inventories", entity.getInventories());
+        model.addAttribute("inventoriesAsMap", warehouseService.getInventoriesAsMap(entity));
 
         //edit-warehouse.html
         return "edit-warehouse";
     }
 
     @PostMapping("view/warehouses/update")
-    public String updateExistingWarehouse   (@ModelAttribute("newWarehouse") Warehouse updatedEntity,
-                                             @RequestParam("reqInvId") String reqInvId,
-                                             @RequestParam("reqInvName") String reqInvName,
-                                             @RequestParam("reqInvSku") String reqInvSku,
-                                             @RequestParam("reqInvCreated") String reqInvCreated,
-                                             @RequestParam("reqInvModified") String reqInvModified,
+    public String updateExistingWarehouse   (@ModelAttribute("newWarehouse") Warehouse warehouse,
                                              BindingResult result, Model model) {
-        log.debug("reqInvId: {}", reqInvId);
-        String[] invId = reqInvId.split(",");
-
-        log.debug("reqInvName: {}", reqInvName);
-        String[] invName = reqInvName.split(",");
-
-        log.debug("reqInvSku: {}", reqInvSku);
-        String[] invSku = reqInvSku.split(",");
-
-        log.debug("reqInvCreated: {}", reqInvCreated);
-        String[] invCreated = reqInvCreated.split(",");
-
-        log.debug("reqInvModified: {}", reqInvModified);
-        String[] invModified = reqInvModified.split(",");
-
         if (result.hasErrors()) {
             model.addAttribute("warehouses", warehouseService.findAll());
 
@@ -191,38 +166,91 @@ public class SimpleModelViewController {
             return "show-warehouse";
         }
 
-        Set<Inventory> recoveredInventories = new HashSet<>();
-        for(int i = 0; i < invId.length; i++) {
+        log.info("Saving...[{}]", warehouse);
 
-            try {
-                Inventory inventory = new Inventory();
-                inventory.setId(invId[i]);
-                inventory.setName(invName[i]);
-                inventory.setSku(invSku[i]);
-                inventory.setCreatedDate(simpleDateFormat.parse(invCreated[i]));
-                inventory.setLastModifiedDate(simpleDateFormat.parse(invModified[i]));
-                inventory.setWarehouse(updatedEntity);
-
-                recoveredInventories.add(inventory);
-            } catch (ParseException e) {
-                log.error("Error while parsing Inventory: ", e);
-
-                model.addAttribute("warehouses", warehouseService.findAll());
-
-                //show-warehouse.html
-                return "show-warehouse";
-            }
-        }
-
-        updatedEntity.setInventories(recoveredInventories);
-
-        log.info("Saving...[{}]", updatedEntity);
-
-        warehouseService.saveAndFlush(updatedEntity);
+        warehouseService.saveAndFlush(warehouse);
 
         model.addAttribute("warehouses", warehouseService.findAll());
 
         //show-warehouse.html
         return "show-warehouse";
+    }
+
+    @GetMapping("view/inventories/edit/{id}")
+    public String editInventory(@PathVariable("id") String id, Model model) {
+        Inventory entity = inventoryService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid inventory Id:" + id));
+
+        log.info("Before update entity: [{}]", entity);
+
+        model.addAttribute("newInventory", entity);
+        model.addAttribute("createdDate", entity.getCreatedDate());
+        model.addAttribute("lastModifiedDate", entity.getLastModifiedDate());
+        model.addAttribute("warhousesAsMap", warehouseService.getWarhousesAsMap());
+        model.addAttribute("ordersAsMap", inventoryService.getOrdersAsMap(entity));
+
+        //edit-inventory.html
+        return "edit-inventory";
+    }
+
+    @PostMapping("view/inventories/update")
+    public String updateExistingInventory   (@ModelAttribute("newInventory") Inventory inventory,
+                                             BindingResult result, Model model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("inventories", inventoryService.findAll());
+
+            //show-inventory.html
+            return "show-inventory";
+        }
+
+        log.info("Saving...[{}]", inventory);
+
+        inventoryService.saveAndFlush(inventory);
+
+        model.addAttribute("inventories", inventoryService.findAll());
+
+        //show-inventory.html
+        return "show-inventory";
+    }
+
+    @GetMapping("view/orders/edit/{id}")
+    public String editOrder(@PathVariable("id") String id, Model model) {
+        InventoryOrder entity = inventoryOrderService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid inventory order Id:" + id));
+
+        log.info("Before update entity: [{}]", entity);
+
+        model.addAttribute("newOrder", entity);
+        model.addAttribute("createdDate", entity.getCreatedDate());
+        model.addAttribute("lastModifiedDate", entity.getLastModifiedDate());
+        model.addAttribute("inventory", entity.getInventory());
+        model.addAttribute("inventoriesAsMap", inventoryService.getInventoriesAsMap());
+
+        //edit-warehouse.html
+        return "edit-order";
+    }
+
+    @PostMapping("view/orders/update")
+    public String updateExistingOrder(@ModelAttribute("newOrder") InventoryOrder inventoryOrder,
+                                      BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("orders", inventoryOrderService.findAll());
+
+            //show-order.html
+            return "show-order";
+        }
+
+        Instant now = Instant.now();
+        inventoryOrder.setOrderedDate(Date.from(now));
+
+        log.info("Saving...[{}]", inventoryOrder);
+
+        inventoryOrderService.saveAndFlush(inventoryOrder);
+
+        model.addAttribute("orders", inventoryOrderService.findAll());
+
+        //show-order.html
+        return "show-order";
     }
 }

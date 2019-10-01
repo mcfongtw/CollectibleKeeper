@@ -9,9 +9,9 @@
 
     <label for="warehouse">Warehouse</label>
     <select th:field="*{warehouse}", id="warehouse">
-        <option th:each="key : ${mappedWarehouses.keySet()}"
+        <option th:each="key : ${warhousesAsMap.keySet()}"
                 th:value="${key}"
-                th:utext="${mappedWarehouses.get(key)}">
+                th:utext="${warhousesAsMap.get(key)}">
         </option>
     </select>
 

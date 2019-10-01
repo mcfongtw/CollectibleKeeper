@@ -1,0 +1,34 @@
+<form action="#" th:action="@{/view/inventories/update}" th:object="${newInventory}" method="post">
+    <label for="name">Name</label>
+    <input type="text" th:field="*{name}" id="name" placeholder="Name">
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+
+    <label for="sku">Sku</label>
+    <input type="text" th:field="*{sku}" id="sku" placeholder="SKU">
+    <span th:if="${#fields.hasErrors('sku')}" th:errors="*{sku}"></span>
+
+    <label for="warehouse">Warehouse</label>
+    <select th:field="*{warehouse}", id="warehouse">
+        <option th:each="key : ${warhousesAsMap.keySet()}"
+                th:value="${key}"
+                th:utext="${warhousesAsMap.get(key)}">
+        </option>
+    </select>
+
+    <!-- Hidden attributes for inventory so that DateTime object would NOT be null after passing through template-->
+    <input type="hidden" th:field="*{id}" id="id">
+    <input type="hidden" th:field="*{createdDate}" id="createdDate">
+    <input type="hidden" th:field="*{lastModifiedDate}" id="lastModifiedDate">
+
+    <!-- Hidden relations for inventory.order -->
+    <div class="hidden-relation" style="display: none;">
+        <select type="hidden" th:field="*{inventoryOrder}", id="inventoryOrder">
+            <option th:each="key : ${ordersAsMap.keySet()}"
+                    th:value="${key}"
+                    th:utext="${ordersAsMap.get(key)}">
+            </option>
+        </select>
+    </div>
+
+    <input type="submit" value="Update Inventory">
+</form>

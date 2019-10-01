@@ -59,11 +59,21 @@ public class WarehouseService implements CRUDService<Warehouse> {
         return findAll().size();
     }
 
-    public Map<String, String> getMappedWarehouseIdsAndNames() {
+    public Map<String, String> getWarhousesAsMap() {
         Map<String, String> result = new HashMap<>();
 
         for(Warehouse warehouse: warehouseRepository.findAll()) {
             result.put(warehouse.getId(), warehouse.getName());
+        }
+
+        return result;
+    }
+
+    public Map<String, String> getInventoriesAsMap(Warehouse warehouse) {
+        Map<String, String> result = new HashMap<>();
+
+        for(Inventory inventory: warehouse.getInventories()) {
+            result.put(inventory.getId(), inventory.getName());
         }
 
         return result;

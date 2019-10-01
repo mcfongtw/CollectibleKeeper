@@ -1,6 +1,7 @@
 package com.github.mcfongtw.collector.domain.service;
 
 import com.github.mcfongtw.collector.dao.entity.Inventory;
+import com.github.mcfongtw.collector.dao.entity.InventoryOrder;
 import com.github.mcfongtw.collector.dao.repository.InventoryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,12 +64,21 @@ public class InventoryService implements CRUDService<Inventory> {
         return findAll().size();
     }
 
-    public Map<String, String> getMappedInventories() {
+    public Map<String, String> getInventoriesAsMap() {
         Map<String, String> result = new HashMap<>();
 
         for(Inventory inventory: inventoryRepository.findAll()) {
             result.put(inventory.getId(), inventory.getName());
         }
+
+        return result;
+    }
+
+    public Map<String, String> getOrdersAsMap(Inventory inventory) {
+        Map<String, String> result = new HashMap<>();
+
+        InventoryOrder order = inventory.getInventoryOrder();
+        result.put(order.getId(), order.getCurrency().name());
 
         return result;
     }
