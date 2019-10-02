@@ -5,7 +5,9 @@ import com.github.mcfongtw.collector.dao.entity.Inventory;
 import com.github.mcfongtw.collector.dao.entity.InventoryOrder;
 import com.github.mcfongtw.collector.dao.repository.InventoryOrderRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,11 @@ public class InventoryOrderServiceTest {
     @Autowired
     private InventoryOrderService inventoryOrderService;
 
+    @Before
+    public void setUp() {
+        inventoryOrderService.clear();
+    }
+
 
     @Test
     public void testUpdateOrder() {
@@ -46,6 +53,7 @@ public class InventoryOrderServiceTest {
         Assert.assertEquals(updatedOrder.getOrderedPrice(), 1.23, 0.0);
         Assert.assertEquals(updatedOrder.getId(), origOrder.getId());
         Assert.assertEquals(inventoryOrderService.findAll().size(), origSize);
+
     }
 
     @Transactional
@@ -80,19 +88,18 @@ public class InventoryOrderServiceTest {
         inventoryOrderService.saveAndFlush(inventoryOrder2);
 
         //Test Above
-        Assert.assertEquals(inventoryOrderService.getListOfOrderAbovePurchasedPrice(1.00).size(), 2);
+        Assert.assertEquals(inventoryOrderService.getListOfOrderAbovePurchasedPrice(1.00).size(), 1);
         Assert.assertEquals(inventoryOrderService.getListOfOrderAbovePurchasedPrice(20.00).size(), 0);
 
-        Assert.assertEquals(inventoryOrderService.getListOfOrderAboveSoldPrice(1.00).size(), 2);
+        Assert.assertEquals(inventoryOrderService.getListOfOrderAboveSoldPrice(1.00).size(), 1);
         Assert.assertEquals(inventoryOrderService.getListOfOrderAboveSoldPrice(20.00).size(), 0);
 
         //Test Below
         Assert.assertEquals(inventoryOrderService.getListOfOrderBelowPurchasedPrice(1.00).size(), 0);
-        Assert.assertEquals(inventoryOrderService.getListOfOrderBelowPurchasedPrice(20.00).size(), 3);
+        Assert.assertEquals(inventoryOrderService.getListOfOrderBelowPurchasedPrice(20.00).size(), 1);
 
         Assert.assertEquals(inventoryOrderService.getListOfOrderBelowSoldPrice(1.00).size(), 0);
-        Assert.assertEquals(inventoryOrderService.getListOfOrderBelowSoldPrice(20.00).size(), 2);
-
+        Assert.assertEquals(inventoryOrderService.getListOfOrderBelowSoldPrice(20.00).size(), 1);
 
     }
 
@@ -129,18 +136,18 @@ public class InventoryOrderServiceTest {
 
 
         //Test Before
-        Assert.assertEquals(inventoryOrderService.getListOfOrderBeforePurchasedDate(Date.from(Instant.now())).size(), 2);
+        Assert.assertEquals(inventoryOrderService.getListOfOrderBeforePurchasedDate(Date.from(Instant.now())).size(), 1);
         Assert.assertEquals(inventoryOrderService.getListOfOrderBeforePurchasedDate(Date.from(Instant.EPOCH)).size(), 0);
 
-        Assert.assertEquals(inventoryOrderService.getListOfOrderBeforeSoldDate(Date.from(Instant.now())).size(), 2);
+        Assert.assertEquals(inventoryOrderService.getListOfOrderBeforeSoldDate(Date.from(Instant.now())).size(), 1);
         Assert.assertEquals(inventoryOrderService.getListOfOrderBeforeSoldDate(Date.from(Instant.EPOCH)).size(), 0);
 
         //Test After
         Assert.assertEquals(inventoryOrderService.getListOfOrderAfterPurchasedDate(Date.from(Instant.now())).size(), 0);
-        Assert.assertEquals(inventoryOrderService.getListOfOrderAfterPurchasedDate(Date.from(Instant.EPOCH)).size(), 2);
+        Assert.assertEquals(inventoryOrderService.getListOfOrderAfterPurchasedDate(Date.from(Instant.EPOCH)).size(), 1);
 
         Assert.assertEquals(inventoryOrderService.getListOfOrderAfterSoldDate(Date.from(Instant.now())).size(), 0);
-        Assert.assertEquals(inventoryOrderService.getListOfOrderAfterSoldDate(Date.from(Instant.EPOCH)).size(), 2);
+        Assert.assertEquals(inventoryOrderService.getListOfOrderAfterSoldDate(Date.from(Instant.EPOCH)).size(), 1);
     }
 
     @Transactional

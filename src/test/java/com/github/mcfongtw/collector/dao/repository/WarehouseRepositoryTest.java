@@ -4,7 +4,9 @@ import com.github.mcfongtw.collector.CollectorApplication;
 import com.github.mcfongtw.collector.dao.entity.Inventory;
 import com.github.mcfongtw.collector.dao.entity.Warehouse;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,11 @@ public class WarehouseRepositoryTest {
 
     @Autowired
     private WarehouseRepository warehouseRepository;
+
+    @Before
+    public void setUp() {
+        warehouseRepository.deleteAll();
+    }
 
     @Test
     public void testFindWarehouseByIdViaCrudRepository() {

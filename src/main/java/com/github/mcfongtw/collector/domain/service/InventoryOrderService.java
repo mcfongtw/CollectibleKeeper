@@ -46,6 +46,11 @@ public class InventoryOrderService implements CRUDService<InventoryOrder>{
         return findAll().size();
     }
 
+    @Override
+    public void clear() {
+        inventoryOrderRepository.deleteAll();
+    }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public List<InventoryOrder> getListOfOrderAbovePurchasedPrice(Double purchasedPrice) {

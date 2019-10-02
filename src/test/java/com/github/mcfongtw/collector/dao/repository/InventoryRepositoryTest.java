@@ -4,7 +4,9 @@ import com.github.mcfongtw.collector.CollectorApplication;
 import com.github.mcfongtw.collector.dao.entity.Inventory;
 import com.github.mcfongtw.collector.dao.entity.InventoryOrder;
 import com.github.mcfongtw.collector.dao.entity.Warehouse;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,11 @@ public class InventoryRepositoryTest {
 
     @Autowired
     private InventoryRepository inventoryRepository;
+
+    @Before
+    public void setUp() {
+        inventoryRepository.deleteAll();
+    }
 
 
     @Test

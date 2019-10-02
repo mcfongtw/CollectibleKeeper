@@ -64,6 +64,11 @@ public class InventoryService implements CRUDService<Inventory> {
         return findAll().size();
     }
 
+    @Override
+    public void clear() {
+        inventoryRepository.deleteAll();
+    }
+
     public Map<String, String> getInventoriesAsMap() {
         Map<String, String> result = new HashMap<>();
 

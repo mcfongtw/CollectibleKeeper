@@ -59,6 +59,11 @@ public class WarehouseService implements CRUDService<Warehouse> {
         return findAll().size();
     }
 
+    @Override
+    public void clear() {
+        warehouseRepository.deleteAll();
+    }
+
     public Map<String, String> getWarhousesAsMap() {
         Map<String, String> result = new HashMap<>();
 

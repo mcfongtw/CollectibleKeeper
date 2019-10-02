@@ -16,4 +16,6 @@ public interface CRUDService<T extends AbstractEntity> {
     void deleteById(String uuid);
 
     int count();
+
+    void clear();
 }
