@@ -3,7 +3,8 @@
         <tr>
             <th> Id </th>
             <th> Name </th>
-            <th> Edit </th>
+            <th> </th>
+            <th> </th>
         </tr>
     </thead>
     <tbody>
@@ -14,6 +15,7 @@
             <td><span th:text="${warehouse.id}"> Id </span></td>
             <td><span th:text="${warehouse.name}"> Name </span></td>
             <td><a th:href="@{/view/warehouses/edit/{id}(id=${warehouse.id})}">Edit</a></td>
+            <td><a th:href="@{/view/warehouses/remove/{id}(id=${warehouse.id})}">Remove</a></td>
         </tr>
     </tbody>
 </table>

@@ -15,8 +15,9 @@
             <td><span th:text="${inventory.id}"> Id </span></td>
             <td><span th:text="${inventory.name}"> Name </span></td>
             <td><span th:text="${inventory.sku}"> Sku </span></td>
-            <td><span th:text="${inventory.warehouse.name}"> Warehouse </span></td>
+            <td><span th:text="${inventory.warehouse?.name}"> Warehouse </span></td>
             <td><a th:href="@{/view/inventories/edit/{id}(id=${inventory.id})}">Edit</a></td>
+            <td><a th:href="@{/view/inventories/remove/{id}(id=${inventory.id})}">Remove</a></td>
         </tr>
     </tbody>
 </table>

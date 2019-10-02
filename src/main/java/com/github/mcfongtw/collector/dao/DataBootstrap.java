@@ -42,20 +42,30 @@ public class DataBootstrap implements ApplicationRunner {
         log.info("Production mode: [{}]", isProductionMode);
 
         if(count == 0 && !isProductionMode) {
-            Warehouse warehouse = new Warehouse();
-            warehouse.setName("Taipei");
+            Warehouse warehouse1 = new Warehouse();
+            warehouse1.setName("Taipei");
 
             Inventory inventory1 = new Inventory();
             inventory1.setName("111");
             inventory1.setSku("AAA");
-            inventory1.setWarehouse(warehouse);
+            inventory1.setWarehouse(warehouse1);
 
             Inventory inventory2 = new Inventory();
             inventory2.setName("222");
             inventory2.setSku("BBB");
-            inventory2.setWarehouse(warehouse);
+            inventory2.setWarehouse(warehouse1);
 
-            warehouseService.saveAndFlush(warehouse);
+            warehouseService.saveAndFlush(warehouse1);
+
+            Warehouse warehouse2 = new Warehouse();
+            warehouse2.setName("L.A.");
+
+            Inventory inventory3 = new Inventory();
+            inventory3.setName("333");
+            inventory3.setSku("CCC");
+            inventory3.setWarehouse(warehouse2);
+
+            warehouseService.saveAndFlush(warehouse2);
 
             InventoryOrder inventoryOrder1 = new InventoryOrder();
             inventoryOrder1.setOrderedDate(Date.from(Instant.now()));
@@ -75,6 +85,16 @@ public class DataBootstrap implements ApplicationRunner {
             inventory2.setInventoryOrder(inventoryOrder2);
 
             inventoryOrderService.saveAndFlush(inventoryOrder2);
+
+            InventoryOrder inventoryOrder3 = new InventoryOrder();
+            inventoryOrder3.setOrderedDate(Date.from(Instant.now()));
+            inventoryOrder3.setOrderedType(ORDER_TYPE_BUY);
+            inventoryOrder3.setOrderedPrice(new Double(1.00));
+            inventoryOrder3.setInventory(inventory3);
+
+            inventory3.setInventoryOrder(inventoryOrder3);
+
+            inventoryOrderService.saveAndFlush(inventoryOrder3);
         }
     }
 }

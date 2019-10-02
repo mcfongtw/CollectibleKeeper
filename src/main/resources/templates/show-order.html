@@ -19,8 +19,9 @@
             <td><span th:text="${order.orderedType}"> Type </span></td>
             <td><span th:text="${order.orderedPrice}"> Price </span></td>
             <td><span th:text="${order.orderedDate}"> Date </span></td>
-            <td><span th:text="${order.inventory.name}"> Inventory </span></td>
+            <td><span th:text="${order.inventory?.name}"> Inventory </span></td>
             <td><a th:href="@{/view/orders/edit/{id}(id=${order.id})}">Edit</a></td>
+            <td><a th:href="@{/view/orders/remove/{id}(id=${order.id})}">Remove</a></td>
         </tr>
     </tbody>
 </table>

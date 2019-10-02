@@ -8,10 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.*;
 
 @Slf4j
 @Transactional
@@ -20,6 +19,9 @@ public class WarehouseService implements CRUDService<Warehouse> {
 
     @Autowired
     private WarehouseRepository warehouseRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public List<Warehouse> findAll() {
@@ -63,6 +65,22 @@ public class WarehouseService implements CRUDService<Warehouse> {
     public void clear() {
         warehouseRepository.deleteAll();
     }
+
+    @Override
+    public void deleteWithoutAssociations(String id) {
+        Warehouse warehouse = entityManager.find(Warehouse.class, id);
+
+        //remove associations at child entity
+        for(Inventory inventory: warehouse.getInventories()) {
+            inventory.setWarehouse(null);
+        }
+
+        //remove parent entity
+        entityManager.remove(warehouse);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     public Map<String, String> getWarhousesAsMap() {
         Map<String, String> result = new HashMap<>();

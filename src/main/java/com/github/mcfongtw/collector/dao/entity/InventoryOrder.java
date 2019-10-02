@@ -38,9 +38,8 @@ public class InventoryOrder extends AbstractEntity {
     //TODO: performance improvement
     //Bidirectional OneToOne
     @OneToOne(
-            cascade = {CascadeType.ALL},
-            fetch = FetchType.LAZY,
-            orphanRemoval = true
+            cascade = {CascadeType.PERSIST,CascadeType.MERGE},
+            fetch = FetchType.LAZY
     )
     @JsonIgnore
     private Inventory inventory;

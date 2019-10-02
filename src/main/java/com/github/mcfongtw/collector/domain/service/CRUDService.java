@@ -18,4 +18,6 @@ public interface CRUDService<T extends AbstractEntity> {
     int count();
 
     void clear();
+
+    void deleteWithoutAssociations(String id);
 }

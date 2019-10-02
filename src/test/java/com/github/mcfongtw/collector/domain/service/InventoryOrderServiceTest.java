@@ -29,9 +29,14 @@ public class InventoryOrderServiceTest {
     @Autowired
     private InventoryOrderService inventoryOrderService;
 
+    @Autowired
+    private InventoryService inventoryService;
+
     @Before
     public void setUp() {
         inventoryOrderService.clear();
+
+        inventoryService.clear();
     }
 
 

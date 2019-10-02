@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +21,9 @@ public class InventoryOrderService implements CRUDService<InventoryOrder>{
 
     @Autowired
     private InventoryOrderRepository inventoryOrderRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
 
     @Override
@@ -49,6 +54,17 @@ public class InventoryOrderService implements CRUDService<InventoryOrder>{
     @Override
     public void clear() {
         inventoryOrderRepository.deleteAll();
+    }
+
+    @Override
+    public void deleteWithoutAssociations(String id) {
+        InventoryOrder inventoryOrder = entityManager.find(InventoryOrder.class, id);
+
+        //remove associations at parent entity
+        inventoryOrder.setInventory(null);
+
+        //remove parent entity
+        entityManager.remove(inventoryOrder);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////

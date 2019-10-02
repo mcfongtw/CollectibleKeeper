@@ -255,4 +255,44 @@ public class SimpleModelViewController {
         //show-order.html
         return "show-order";
     }
+
+    /////////////////////////
+    @GetMapping("view/warehouses/remove/{id}")
+    public String removeWarehouse(@PathVariable("id") String id, Model model) {
+        Warehouse entity = warehouseService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid warehouse Id:" + id));
+
+        warehouseService.deleteWithoutAssociations(id);
+
+        model.addAttribute("warehouses", warehouseService.findAll());
+
+        //show-warehouse.html
+        return "show-warehouse";
+    }
+
+    @GetMapping("view/inventories/remove/{id}")
+    public String removeInventory(@PathVariable("id") String id, Model model) {
+        Inventory entity = inventoryService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid inventory Id:" + id));
+
+        inventoryService.deleteWithoutAssociations(id);
+
+        model.addAttribute("inventories", inventoryService.findAll());
+
+        //show-inventory.html
+        return "show-inventory";
+    }
+
+    @GetMapping("view/orders/remove/{id}")
+    public String removeOrder(@PathVariable("id") String id, Model model) {
+        InventoryOrder entity = inventoryOrderService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid warehouse Id:" + id));
+
+        inventoryOrderService.deleteWithoutAssociations(id);
+
+        model.addAttribute("orders", inventoryOrderService.findAll());
+
+        //show-order.html
+        return "show-order";
+    }
 }

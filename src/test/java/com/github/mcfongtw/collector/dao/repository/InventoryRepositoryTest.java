@@ -33,10 +33,15 @@ import static com.github.mcfongtw.collector.dao.entity.InventoryOrder.ORDER_TYPE
 public class InventoryRepositoryTest {
 
     @Autowired
+    private WarehouseRepository warehouseRepository;
+
+    @Autowired
     private InventoryRepository inventoryRepository;
 
     @Before
     public void setUp() {
+        warehouseRepository.deleteAll();
+
         inventoryRepository.deleteAll();
     }
 

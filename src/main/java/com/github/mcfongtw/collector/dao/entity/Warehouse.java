@@ -35,10 +35,13 @@ public class Warehouse extends AbstractEntity {
     @OneToMany(
             mappedBy = "warehouse",
             cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-            orphanRemoval = true,
             fetch = FetchType.EAGER
     )
     private Set<Inventory> inventories = Sets.newHashSet();
+
+    public void clearInventories() {
+        inventories.clear();
+    }
 
     public void addInventory(Inventory inventory) {
         this.getInventories().add(inventory);

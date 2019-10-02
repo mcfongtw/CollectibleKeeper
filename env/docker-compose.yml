@@ -5,6 +5,7 @@ services:
     image: postgres:9.5
     volumes:
       - collector_db_data:/var/lib/postgresql/data
+    # docker exec -it collector_db_container psql collector_db -h collector_db_container -U admin
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
@@ -13,7 +14,7 @@ services:
     ports:
       - 5432:5432
   admin:
-    container_name: pgadmin4
+    container_name: pgadmin4_container
     image: dpage/pgadmin4
     environment:
       - PGADMIN_DEFAULT_EMAIL=user@test.com

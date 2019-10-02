@@ -32,9 +32,14 @@ public class WarehouseRepositoryTest {
     @Autowired
     private WarehouseRepository warehouseRepository;
 
+    @Autowired
+    private InventoryRepository inventoryRepository;
+
     @Before
     public void setUp() {
         warehouseRepository.deleteAll();
+
+        inventoryRepository.deleteAll();
     }
 
     @Test

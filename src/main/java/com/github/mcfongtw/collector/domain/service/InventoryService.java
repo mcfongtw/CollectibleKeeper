@@ -2,12 +2,15 @@ package com.github.mcfongtw.collector.domain.service;
 
 import com.github.mcfongtw.collector.dao.entity.Inventory;
 import com.github.mcfongtw.collector.dao.entity.InventoryOrder;
+import com.github.mcfongtw.collector.dao.entity.Warehouse;
 import com.github.mcfongtw.collector.dao.repository.InventoryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +23,9 @@ public class InventoryService implements CRUDService<Inventory> {
 
     @Autowired
     private InventoryRepository inventoryRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public List<Inventory> findAll() {
@@ -68,6 +74,24 @@ public class InventoryService implements CRUDService<Inventory> {
     public void clear() {
         inventoryRepository.deleteAll();
     }
+
+    @Override
+    public void deleteWithoutAssociations(String id) {
+        Inventory inventory = entityManager.find(Inventory.class, id);
+
+        //remove associations at child entity
+        Warehouse warehouse = inventory.getWarehouse();
+        warehouse.getInventories().remove(inventory);
+
+        InventoryOrder inventoryOrder = inventory.getInventoryOrder();
+        inventoryOrder.setInventory(null);
+
+        //remove parent entity
+        entityManager.remove(inventory);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     public Map<String, String> getInventoriesAsMap() {
         Map<String, String> result = new HashMap<>();

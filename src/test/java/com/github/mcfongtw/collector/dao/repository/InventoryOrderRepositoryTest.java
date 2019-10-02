@@ -31,9 +31,14 @@ public class InventoryOrderRepositoryTest {
     @Autowired
     private InventoryOrderRepository inventoryOrderRepository;
 
+    @Autowired
+    private InventoryRepository inventoryRepository;
+
     @Before
     public void setUp() {
         inventoryOrderRepository.deleteAll();
+
+        inventoryRepository.deleteAll();
     }
 
     @Test
