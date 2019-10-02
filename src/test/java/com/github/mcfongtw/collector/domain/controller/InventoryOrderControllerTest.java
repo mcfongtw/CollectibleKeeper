@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -24,6 +25,9 @@ public class InventoryOrderControllerTest {
     @Autowired
     private TestRestTemplate testRestTemplate;
 
+    @Value("${server.servlet.context-path}")
+    private String apiUrlPrefix;
+
     @LocalServerPort
     private int port;
 
@@ -31,9 +35,11 @@ public class InventoryOrderControllerTest {
 
     private static String BASE_URL;
 
+
     @Before
     public void setUp() {
-        BASE_URL = "http://localhost:" + port + "/orders";
+        BASE_URL = "http://localhost:" + port + apiUrlPrefix + "/orders";
+        log.info("Base URL : [{}]", BASE_URL);
     }
 
     @Test

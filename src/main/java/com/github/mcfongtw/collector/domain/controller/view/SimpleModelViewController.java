@@ -8,6 +8,7 @@ import com.github.mcfongtw.collector.domain.service.InventoryService;
 import com.github.mcfongtw.collector.domain.service.WarehouseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,7 +32,8 @@ public class SimpleModelViewController {
     @Autowired
     private WarehouseService warehouseService;
 
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss.SSS");
+    @Value("${server.servlet.context-path}")
+    private String apiUrlPrefix;
 
     @GetMapping("/")
     public String main(Model model) {

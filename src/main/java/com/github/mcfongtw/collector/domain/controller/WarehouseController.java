@@ -7,6 +7,7 @@ import com.github.mcfongtw.collector.domain.service.WarehouseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -18,7 +19,7 @@ import java.util.Set;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/warehouses", produces = "application/json")
+@RequestMapping(value = "/warehouses", produces = MediaType.APPLICATION_JSON_VALUE)
 public class WarehouseController {
 
     @Autowired
